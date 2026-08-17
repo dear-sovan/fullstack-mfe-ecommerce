@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  product-service:
+    build:
+      context: ./services/product-service
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      - NODE_ENV=production
+      - PORT=4001
+      - MONGO_URI=mongodb://mongo:27017/enterprise_ecommerce
+      - JWT_SECRET=supersecretkey123
+    depends_on:
+      - mongo
+    restart: always
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
